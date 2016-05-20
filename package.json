@@ -1,0 +1,11 @@
+{
+  "name": "fft",
+  "version": "1.0.0",
+  "description": "a compact fft module",
+  "main": "fft.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nevo Segal",
+  "license": "ISC"
+}
