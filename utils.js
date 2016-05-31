@@ -1,18 +1,23 @@
 'use strict';
 
+// memoization of the reversal of different lengths.
 var memoizedReversal = {};
+
 let bitReverseArray = function(N){
 	if(memoizedReversal[N] === undefined){
-		let maxBinaryLength = (N-1).toString(2).length;
-		let templateBinary = '0'.repeat(maxBinaryLength);
+		let maxBinaryLength = (N-1).toString(2).length; //get the binary length of the largest index.
+		let templateBinary = '0'.repeat(maxBinaryLength); //create a template binary of that length.
 		let reversed = {};
 		for(let n=0; n<N; n++){
-			let currBinary = n.toString(2);
+			let currBinary = n.toString(2); //get binary value of current index.
+
+			//prepend zeros from template to current binary. This makes binary values of all indices have the same length.
 			currBinary = templateBinary.substr(currBinary.length) + currBinary;
-			currBinary = [...currBinary].reverse().join('');
-			reversed[n] = parseInt(currBinary, 2);
+
+			currBinary = [...currBinary].reverse().join(''); //reverse
+			reversed[n] = parseInt(currBinary, 2); //convert to decimal
 		}
-		memoizedReversal[N] = reversed;
+		memoizedReversal[N] = reversed; //save
 	}
 	return memoizedReversal[N];
 }
