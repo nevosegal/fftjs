@@ -33,6 +33,11 @@ let add = function(a,b){
   return [a[0]+b[0], a[1]+b[1]];
 }
 
+// complex subtraction
+let subtract = function(a,b){
+  return [a[0]-b[0], a[1]-b[1]];
+}
+
 // euler's identity e^x = cos(x) + sin(x)
 let euler = function(kn, N){
 	let x = -2*Math.PI*kn/N;
@@ -43,5 +48,6 @@ module.exports={
 	bitReverseArray: bitReverseArray,
 	multiply: multiply,
   	add: add,
+  	subtract: subtract,
   	euler: euler
 };
