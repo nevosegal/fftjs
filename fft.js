@@ -2,15 +2,21 @@
 let dft = require('./dft');
 let utils = require('./utils');
 
+// real to complex fft
 let fft = function(signal){
-	let N = signal.length;
-	let bitReversedIndices = utils.bitReverseArray(N);
-	let logN = Math.log2(N);
-
-	// sort array and store as complex
+	const N = signal.length;
+	const logN = Math.log2(N);
+	
+	if(Math.round(logN) != logN) throw new Error('Input size must be a power of 2.');
+	
+	const bitReversedIndices = utils.bitReverseArray(N);
+	
+	// sort array
 	let ordered = [];
 	for(let i=0; i<N; i++) ordered[bitReversedIndices[i]] = signal[i];
-	for(let i=0; i<N; i++) signal[i] = [ordered[i], 0];
+	for(let i=0; i<N; i++){
+		signal[i].length === undefined ? signal[i] = [ordered[i], 0] : signal[i] = ordered[i];
+	}
 
 
 	// iterate over the number of stages
@@ -32,9 +38,30 @@ let fft = function(signal){
 			}
 		}
 	}
+	
+	return signal;
+}
+
+// complex to real ifft
+let ifft = function(signal){
+	const N = signal.length;
+	
+	//take complex conjugate in order to be able to use the regular FFT for IFFT
+	for(let i=0; i<N; i++) signal[i] = utils.conj(signal[i]);
+
+	//compute
+	let X = fft(signal);
+
+	// normalize and take only real part of result
+	signal = X.map((val) => {
+		return val[0]/N;
+	});
 
 	return signal;
 }
 
 
-module.exports = fft;
+module.exports = {
+	fft: fft,
+	ifft: ifft
+};

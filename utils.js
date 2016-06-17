@@ -44,10 +44,17 @@ let euler = function(kn, N){
 	return [Math.cos(x), Math.sin(x)];
 }
 
+// complex conjugate
+let conj = function(a){
+	a[1] *= -1;
+	return a;
+}
+
 module.exports={
 	bitReverseArray: bitReverseArray,
 	multiply: multiply,
   	add: add,
   	subtract: subtract,
-  	euler: euler
+  	euler: euler,
+  	conj: conj
 };
