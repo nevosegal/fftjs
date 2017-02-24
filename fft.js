@@ -12,12 +12,14 @@ let fft = function(signal){
   const bitReversedIndices = utils.bitReverseArray(N);
 
   // sort array
-  let ordered = [];
-  for(let i = 0; i < N; i++) ordered[bitReversedIndices[i]] = signal[i];
+  let ordered = {};
   for(let i = 0; i < N; i++){
-    signal[i].length === undefined ? signal[i] = [ordered[i], 0] : signal[i] = ordered[i];
+    ordered[bitReversedIndices[i]] = signal[i];
   }
 
+  for(let i = 0; i < N; i++){
+    signal[i] = ordered[i];
+  }
 
   // iterate over the number of stages
   for(let n = 1; n <= logN; n++){
@@ -28,7 +30,7 @@ let fft = function(signal){
       let twiddle = utils.euler(k, currN);
 
       // on each block of FT, implement the butterfly diagram
-      for(let m = 0; m < N/currN; m++){
+      for(let m = 0; m < N / currN; m++){
         let currEvenIndex = (currN * m) + k;
         let currOddIndex = (currN * m) + k + (currN / 2);
         let odd = utils.multiply(twiddle, signal[currOddIndex]);
@@ -54,8 +56,12 @@ let ifft = function(signal){
 
   // normalize and take only real part of result
   signal = X.map((val) => {
-    return val[0] / N;
-  });
+    return {
+      'real': val.real / N,
+      'imag': val.imag / N
+    }
+  }
+  );
 
   return signal;
 }

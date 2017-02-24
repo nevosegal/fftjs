@@ -23,30 +23,38 @@ let bitReverseArray = function(N){
 }
 
 // complex multiplication
-let multiply = function(a,b){
-  return [a[0] * b[0] - a[1] * b[1],
-      a[0] * b[1] + a[1] * b[0]];
+let multiply = function(a, b){
+  return {
+          'real': a.real * b.real - a.imag * b.imag,
+          'imag': a.real * b.imag + a.imag * b.real
+        };
 }
 
 // complex addition
-let add = function(a,b){
-  return [a[0] + b[0], a[1] + b[1]];
+let add = function(a, b){
+  return {
+          'real': a.real + b.real,
+          'imag': a.imag + b.imag
+        };
 }
 
 // complex subtraction
-let subtract = function(a,b){
-  return [a[0] - b[0], a[1] - b[1]];
+let subtract = function(a, b){
+  return {
+            'real': a.real - b.real,
+            'imag': a.imag - b.imag
+        };
 }
 
 // euler's identity e^x = cos(x) + sin(x)
 let euler = function(kn, N){
   let x = -2 * Math.PI * kn / N;
-  return [Math.cos(x), Math.sin(x)];
+  return {'real': Math.cos(x), 'imag': Math.sin(x)};
 }
 
 // complex conjugate
 let conj = function(a){
-  a[1] *= -1;
+  a.imag *= -1;
   return a;
 }
 

@@ -1,6 +1,6 @@
 {
-  "name": "fft",
-  "version": "1.0.0",
+  "name": "fftjs",
+  "version": "0.0.1",
   "description": "a compact fft module",
   "main": "fft.js",
   "scripts": {
