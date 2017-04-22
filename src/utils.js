@@ -2,6 +2,21 @@
 
 // memoization of the reversal of different lengths.
 var memoizedReversal = {};
+var memoizedZeroBuffers = {}
+
+let constructComplexArray = function(signal){
+  var complexSignal = {};
+  complexSignal.real = (signal.real === undefined) ? signal : signal.real;
+  var bufferSize = complexSignal.real.length;
+
+  if(memoizedZeroBuffers[bufferSize] === undefined){
+    memoizedZeroBuffers[bufferSize] = Array.apply(null, Array(bufferSize)).map(Number.prototype.valueOf, 0);
+  }
+
+  complexSignal.imag = memoizedZeroBuffers[bufferSize];
+
+  return complexSignal;
+}
 
 let bitReverseArray = function(N){
   if(memoizedReversal[N] === undefined){
@@ -59,10 +74,11 @@ let conj = function(a){
 }
 
 module.exports={
-  bitReverseArray: bitReverseArray,
-  multiply: multiply,
-    add: add,
-    subtract: subtract,
-    euler: euler,
-    conj: conj
+  bitReverseArray,
+  multiply,
+  add,
+  subtract,
+  euler,
+  conj,
+  constructComplexArray
 };
