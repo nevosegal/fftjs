@@ -5,16 +5,22 @@ let utils = require('./utils');
 // real to complex fft
 let fft = function(signal){
 
+  let complexSignal = {};
+
   if(signal.real === undefined || signal.imag === undefined){
-    signal = utils.constructComplexArray(signal);
+    complexSignal = utils.constructComplexArray(signal);
+  }
+  else {
+    complexSignal.real = signal.real.slice();
+    complexSignal.imag = signal.imag.slice();
   }
 
-  const N = signal.real.length;
+  const N = complexSignal.real.length;
   const logN = Math.log2(N);
 
   if(Math.round(logN) != logN) throw new Error('Input size must be a power of 2.');
 
-  if(signal.real.length != signal.imag.length){
+  if(complexSignal.real.length != complexSignal.imag.length){
     throw new Error('Real and imaginary components must have the same length.');
   }
 
@@ -27,15 +33,14 @@ let fft = function(signal){
   };
 
   for(let i = 0; i < N; i++){
-    ordered.real[bitReversedIndices[i]] = signal.real[i];
-    ordered.imag[bitReversedIndices[i]] = signal.imag[i];
+    ordered.real[bitReversedIndices[i]] = complexSignal.real[i];
+    ordered.imag[bitReversedIndices[i]] = complexSignal.imag[i];
   }
 
   for(let i = 0; i < N; i++){
-    signal.real[i] = ordered.real[i];
-    signal.imag[i] = ordered.imag[i];
+    complexSignal.real[i] = ordered.real[i];
+    complexSignal.imag[i] = ordered.imag[i];
   }
-
   // iterate over the number of stages
   for(let n = 1; n <= logN; n++){
     let currN = Math.pow(2, n);
@@ -50,28 +55,28 @@ let fft = function(signal){
         let currOddIndex = (currN * m) + k + (currN / 2);
 
         let currEvenIndexSample = {
-                          'real': signal.real[currEvenIndex],
-                          'imag': signal.imag[currEvenIndex]
+                          'real': complexSignal.real[currEvenIndex],
+                          'imag': complexSignal.imag[currEvenIndex]
                         }
         let currOddIndexSample = {
-                          'real': signal.real[currOddIndex],
-                          'imag': signal.imag[currOddIndex]
+                          'real': complexSignal.real[currOddIndex],
+                          'imag': complexSignal.imag[currOddIndex]
                         }
 
         let odd = utils.multiply(twiddle, currOddIndexSample);
 
         let subtractionResult = utils.subtract(currEvenIndexSample, odd);
-        signal.real[currOddIndex] = subtractionResult.real;
-        signal.imag[currOddIndex] = subtractionResult.imag;
+        complexSignal.real[currOddIndex] = subtractionResult.real;
+        complexSignal.imag[currOddIndex] = subtractionResult.imag;
 
         let additionResult = utils.add(odd, currEvenIndexSample);
-        signal.real[currEvenIndex] = additionResult.real;
-        signal.imag[currEvenIndex] = additionResult.imag;
+        complexSignal.real[currEvenIndex] = additionResult.real;
+        complexSignal.imag[currEvenIndex] = additionResult.imag;
       }
     }
   }
 
-  return signal;
+  return complexSignal;
 }
 
 // complex to real ifft
@@ -80,8 +85,13 @@ let ifft = function(signal){
   if(signal.real === undefined || signal.imag === undefined){
     throw new Error("IFFT only accepts a complex input.")
   }
-  
+
   const N = signal.real.length;
+
+  var complexSignal = {
+    'real': [],
+    'imag': []
+  };
 
   //take complex conjugate in order to be able to use the regular FFT for IFFT
   for(let i = 0; i < N; i++){
@@ -91,16 +101,12 @@ let ifft = function(signal){
     };
 
     let conjugateSample = utils.conj(currentSample);
-    signal.imag[i] = conjugateSample.imag;
+    complexSignal.real[i] = conjugateSample.real;
+    complexSignal.imag[i] = conjugateSample.imag;
   }
 
   //compute
-  let X = fft(signal);
-
-  var complexSignal = {
-    'real': [],
-    'imag': []
-  };
+  let X = fft(complexSignal);
 
   //normalize
   complexSignal.real = X.real.map((val) => {

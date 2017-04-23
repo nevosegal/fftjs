@@ -1,19 +1,20 @@
 {
   "name": "fftjs",
-  "version": "0.0.2-alpha.0",
+  "version": "0.0.2-alpha.1",
   "description": "a compact fft module",
   "main": "dist/fft.js",
   "scripts": {
     "build": "babel src -d dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
   "author": "Nevo Segal",
   "license": "MIT",
-  "repository" : {
-    "type" : "git",
-    "url" : "git@github.com:nevosegal/fftjs.git"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nevosegal/fftjs.git"
   },
   "devDependencies": {
+    "ava": "^0.19.1",
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "mocha": "^3.0.1"

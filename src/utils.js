@@ -6,14 +6,16 @@ var memoizedZeroBuffers = {}
 
 let constructComplexArray = function(signal){
   var complexSignal = {};
-  complexSignal.real = (signal.real === undefined) ? signal : signal.real;
+
+  complexSignal.real = (signal.real === undefined) ? signal.slice() : signal.real.slice();
+
   var bufferSize = complexSignal.real.length;
 
   if(memoizedZeroBuffers[bufferSize] === undefined){
     memoizedZeroBuffers[bufferSize] = Array.apply(null, Array(bufferSize)).map(Number.prototype.valueOf, 0);
   }
 
-  complexSignal.imag = memoizedZeroBuffers[bufferSize];
+  complexSignal.imag = memoizedZeroBuffers[bufferSize].slice();
 
   return complexSignal;
 }
