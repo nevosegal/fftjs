@@ -76,6 +76,11 @@ let fft = function(signal){
 
 // complex to real ifft
 let ifft = function(signal){
+
+  if(signal.real === undefined || signal.imag === undefined){
+    throw new Error("IFFT only accepts a complex input.")
+  }
+  
   const N = signal.real.length;
 
   //take complex conjugate in order to be able to use the regular FFT for IFFT
