@@ -1,6 +1,6 @@
 {
   "name": "fftjs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A compact Fast Fourier Transform (FFT) and Inverse Fast Fourier Transform (IFFT) library for JavaScript.",
   "main": "dist/fft.js",
   "scripts": {
