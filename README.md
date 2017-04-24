@@ -49,6 +49,7 @@ We can also reconstruct our original time-domain signal from the complex phasors
   let reconstructedSignal = jsfft.ifft(phasors);
 
   console.log("reconstructed signal: " + reconstructedSignal);
+  
   /*
     reconstruted signal: [0.13, -0.45, ....];
 
