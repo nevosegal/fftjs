@@ -1,5 +1,5 @@
 # fftjs
-fftjs is a compact JavaScript Fast Fourier Transform (FFT) and Inverse Fast Fourier Transform (IFFT) module.
+fftjs is a compact Fast Fourier Transform (FFT) and Inverse Fast Fourier Transform (IFFT) library for JavaScript.
 It implements the [Cooley-Tukey](https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm) radix-2 Decimation In Time (DIT) algorithm.
 
 
@@ -47,12 +47,11 @@ We can also reconstruct our original time-domain signal from the complex phasors
 
 ```javascript
   let reconstructedSignal = jsfft.ifft(phasors);
-  
+
   console.log("reconstructed signal: " + reconstructedSignal);
   /*
     reconstruted signal: [0.13, -0.45, ....];
-  
+
     reconstructedSignal should be identical to original signal (with very slight rounding errors caused by JavaScript)
   */
 ```
-
