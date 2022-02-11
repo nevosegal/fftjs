@@ -6,6 +6,7 @@
   "scripts": {
     "build": "babel src -d dist"
   },
+  "types": "index.d.ts",
   "author": "Nevo Segal",
   "license": "MIT",
   "repository": {
